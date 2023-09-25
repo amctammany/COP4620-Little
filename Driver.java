@@ -3,6 +3,22 @@ import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 import java.io.PrintWriter;
 
+class ErrorStrategy extends DefaultErrorStrategy {
+	@Override
+	public void recover(Parser recognizer, RecognitionException e) {
+		throw new RuntimeException(e);
+	}
+	@Override
+	public Token recoverInline(Parser recognizer) throws RecognitionException {
+		throw new RuntimeException(new InputMismatchException(recognizer));
+	}
+	@Override
+   public void reportError(Parser recognizer, RecognitionException e) {
+		throw new RuntimeException(e);
+	}
+	@Override
+	public void sync(Parser recognizer) {}
+}
 public class Driver
 {
 
@@ -21,23 +37,16 @@ public class Driver
 		
 		try {
 		LittleParser parser = new LittleParser(tokens);
+		parser.setErrorHandler(new ErrorStrategy());
 		ParseTree tree = parser.program();
+			System.out.println("Accepted");
 
-		System.out.println(tree.toStringTree(parser));
+//		System.out.println(tree.toStringTree(parser));
 		} catch (Exception e) {
 
-			System.out.println("Rejected");
+			System.out.println("Not accepted");
 		}
-		//Vocabulary lexerVocab = lexer.getVocabulary();
-		//int tokenListSize = tokens.getTokens().size();
-		//int tokenNumber = 0;
-		//for (Token var : tokens.getTokens())
-		//{
-			//tokenNumber++;
-			//if(tokenNumber == tokenListSize) {break;}
-			//printWriter.printf("Token Type: %s\n", lexerVocab.getSymbolicName(var.getType()));
-			//printWriter.printf("Value: %s\n", var.getText());
-		//}
+
 		
 		// Closing writing resources
 		printWriter.close();
