@@ -1,0 +1,19 @@
+PROGRAM invalid
+BEGIN
+
+	STRING mystring := "Sum of all numbers from 0 to 99: ";  --This is dummy to satisfy the grammar
+
+     INT i, j, k;
+     
+	FUNCTION VOID main()
+	BEGIN
+		i := 0;
+		result := 0;
+		
+		WHILE (i <= 99)
+      result := result + i;
+		ENDWHILE
+
+    WRITE (mystring);
+		WRITE (result);
+END

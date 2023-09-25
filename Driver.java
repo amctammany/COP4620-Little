@@ -1,5 +1,6 @@
 // import ANTLR's runtime libraries
 import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.tree.*;
 import java.io.PrintWriter;
 
 public class Driver
@@ -18,17 +19,25 @@ public class Driver
 		// Output To StdOut
 		PrintWriter printWriter = new PrintWriter(System.out);
 		
-		
-		Vocabulary lexerVocab = lexer.getVocabulary();
-		int tokenListSize = tokens.getTokens().size();
-		int tokenNumber = 0;
-		for (Token var : tokens.getTokens())
-		{
-			tokenNumber++;
-			if(tokenNumber == tokenListSize) {break;}
-			printWriter.printf("Token Type: %s\n", lexerVocab.getSymbolicName(var.getType()));
-			printWriter.printf("Value: %s\n", var.getText());
+		try {
+		LittleParser parser = new LittleParser(tokens);
+		ParseTree tree = parser.program();
+
+		System.out.println(tree.toStringTree(parser));
+		} catch (Exception e) {
+
+			System.out.println("Rejected");
 		}
+		//Vocabulary lexerVocab = lexer.getVocabulary();
+		//int tokenListSize = tokens.getTokens().size();
+		//int tokenNumber = 0;
+		//for (Token var : tokens.getTokens())
+		//{
+			//tokenNumber++;
+			//if(tokenNumber == tokenListSize) {break;}
+			//printWriter.printf("Token Type: %s\n", lexerVocab.getSymbolicName(var.getType()));
+			//printWriter.printf("Value: %s\n", var.getText());
+		//}
 		
 		// Closing writing resources
 		printWriter.close();
